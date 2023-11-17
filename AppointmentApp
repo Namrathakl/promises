@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <label>UserName:</label>
+        <input type="text" id="username"><br><br>
+        <label>EmailId:</label>
+        <input type="email" id="emailid"><br><br>
+        <label>PhoneNumber:</label>
+        <input type="text" id="phonenumber"><br><br>
+        <button>Submit</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+<script>
+    function saveToCloud(event) {
+        event.preventDefault();
+        const name = event.target.username.value;
+        const phoneNumber = event.target.phonenumber.value;
+        const emailId = event.target.emailid.value;
+
+        const obj= {
+            name,
+            emailId,
+            phoneNumber
+        }
+
+        axios.post("https://crudcrud.com/api/b8dceedfd9e54d858a3cc6d0ba073735/appointmentData", obj)
+        .then((response)=>{
+            console.log(response)
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
+
+    }
+</script>
+</body>
+</html>
