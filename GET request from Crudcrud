@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="saveToCloud(event)">
+        <label for="username"> UserName:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="emailid"> EmailId:</label>
+        <input type="email" id="emailid" name="emailid"><br><br>
+        <label for="phonenumber"> PhoneNumber:</label>
+        <input type="tel" id="phonenumber" name="phonenumber"><br><br>
+        <button> Submit </button>
+        
+    </form>
+    <ul id="listofusers"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+         <script>
+              function saveToCloud(event) {
+                 event.preventDefault();
+                 const name = event.target.username.value;
+                 const emailId = event.target.emailid.value;
+                 const phoneNumber = event.target.phonenumber.value;
+
+                 const obj= {
+                       name,
+                       emailId,
+                       phoneNumber
+                    }
+
+                 axios.post("https://crudcrud.com/api/b8dceedfd9e54d858a3cc6d0ba073735/appointmentData", obj)
+                 .then((respone)=>{
+                    showuseronscreen(respone.data)
+                 console.log(respone)
+                 })
+                 .catch((err)=> {
+                 console.log(err)
+                 })
+
+                }
+
+
+                window.addEventListener("DOMContentLoaded",() => {
+    axios.get('https://crudcrud.com/api/b8dceedfd9e54d858a3cc6d0ba073735/appointmentData')
+.then((res) =>{
+    console.log(res.data);
+    for(i=0;i<res.data.length;i++)
+    {
+        showuseronscreen(res.data[i])
+    }
+})
+.catch((err)=>{
+
+    document.body.innerHTML= document.body.innerHTML+"<h4>Something Went Wrong</h4>"
+    console.log(err)
+               })
+})
+
+                function showuseronscreen(obj)
+{
+    let parent=document.getElementById('listofitems');
+    let li = document.createElement('li');
+    li.textContent=obj.name+'-'+obj.emailId+'-'+obj.phoneNumber;
+
+
+
+
+
+var edit=document.createElement('button');
+    edit.value='Edit';
+
+
+
+
+
+
+    var input=document.createElement('input');
+    input.setAttribute('type','button');        //////input.type=button
+    input.setAttribute('value','delete');                ////input.value=delete
+    input.setAttribute('data-email', obj.email);
+    input.addEventListener('click', ()=>{ ////  input.onclick=()=>
+
+        parent.removeChild(li);
+        localStorage.removeItem(obj.email);
+
+
+
+    });
+
+
+    var inputEdit=document.createElement('input');
+    inputEdit.type='button'      //////input.type=button
+    inputEdit.value='Edit'
+  inputEdit.onclick=() =>{
+
+     parent.removeChild(li);
+        localStorage.removeItem(obj.email);
+       document.getElementById('username').value=obj.name;
+       document.getElementById('emailid').value=obj.email;
+       document.getElementById('phonenumber').value=obj.phonenumber;
+
+
+
+
+
+  }
+
+
+
+
+
+
+    li.appendChild(inputEdit);
+    li.appendChild(input);
+    parent.appendChild(li);
+
+
+}
+
+         </script>
+</body>
+</html>
